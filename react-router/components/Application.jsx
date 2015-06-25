@@ -27,7 +27,7 @@ var Application = React.createClass({
         return (
             <div>
                 <Nav />
-                    <RouteHandler />
+                    {this.props.children}
                 <Timestamp />
             </div>
         );

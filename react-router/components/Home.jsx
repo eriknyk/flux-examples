@@ -11,7 +11,7 @@ var Home = React.createClass({
     },
     render: function() {
         return (
-            <p>Welcome to the site!</p>
+            <p>HOME: Welcome to the site!</p>
         );
     }
 });
