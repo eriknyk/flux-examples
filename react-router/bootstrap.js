@@ -43,25 +43,15 @@ server.use('/public', express.static(__dirname + '/build'));
 //     });
 // });
 
-var Location = require('react-router/lib/Location');
+import Location from 'react-router/lib/Location';
 
 server.use(function (req, res, next) {
     var context = app.createContext();
     var location = new Location(req.path, req.query);
 
-    //console.log('->', context);
-
     Router.run(app.getComponent(), location, (error, initialState, transition) => {
-        //console.log('-> initialState -->', initialState);
         context.executeAction(navigateAction, initialState, function () {
-            //var html = React.renderToString(<Router {...initialState}/>);
-            //var html = '<h1>Hello</h1>';
             var exposed = 'window.App=' + serialize(app.dehydrate(context)) + ';';
-
-
-            //var Component = app.getComponent();
-
-            console.log('---server:::: initialState', initialState);
 
             var html = React.renderToStaticMarkup(HtmlComponent({
                 state: exposed,
@@ -73,7 +63,6 @@ server.use(function (req, res, next) {
                 )),
                 context: context.getComponentContext()
             }));
-
 
             res.send(html);
         });

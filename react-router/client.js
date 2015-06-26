@@ -16,9 +16,10 @@ var FluxibleComponent = require('fluxible/addons/FluxibleComponent');
 
 
 var BrowserHistory = require('react-router/lib/BrowserHistory');
-
 var HashHistory = require('react-router/lib/HashHistory');
 
+
+import routes from './components/Routes.jsx';
 
 // window.React = React; // For chrome dev tool support
 // debug.enable('*');
@@ -77,29 +78,38 @@ var HashHistory = require('react-router/lib/HashHistory');
 
 window.React = React;
 
+console.log('-----tttt----', app.getComponent())
+
+
 app.rehydrate(dehydratedState, function (err, context) {
     window.context = context;
-
-    console.log('-------app.getComponent()------>', app.getComponent());
-
+    var firstRender = true;
+console.log('-----iiii----', app.getComponent())
     Router.run(app.getComponent(), new BrowserHistory(), function (error, Handler, state) {
-        console.log('-error->', error);
-        console.log('-Handler->', Handler);
-        console.log('-state->', state);
-
-        var Component = React.createFactory(Handler.components);
-
-        console.log('-Component->', Component);
-
-        React.render(
-            React.createElement(
-                FluxibleComponent,
-                { context: context.getComponentContext() },
-                <Router children={Handler} history={new HashHistory()}/>
-            ),
-            document.getElementById('app')
-        );
-
+        if (firstRender) {
+            console.log('-----ooo1-----')
+            React.render(
+                React.createElement(
+                    FluxibleComponent,
+                    { context: context.getComponentContext() },
+                    <Router children={routes} history={new BrowserHistory()}/>
+                ),
+                document.getElementById('app')
+            );
+            firstRender = false;
+            console.log('-----ooo-----')
+        } else {
+            context.executeAction(navigateAction, state, function () {
+                React.render(
+                    React.createElement(
+                        FluxibleComponent,
+                        { context: context.getComponentContext() },
+                        <Router children={routes} history={new BrowserHistory()}/>
+                    ),
+                    document.getElementById('app')
+                );
+            });
+        }
     });
 });
 
