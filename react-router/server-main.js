@@ -18,31 +18,6 @@ var server = express();
 server.use(favicon(__dirname + '/../favicon.ico'));
 server.use('/public', express.static(__dirname + '/build'));
 
-// server.use(function (req, res, next) {
-//     var context = app.createContext();
-
-//     Router.run(app.getComponent(), req.path, function (Handler, state) {
-//         context.executeAction(navigateAction, state, function () {
-
-//             var exposed = 'window.App=' + serialize(app.dehydrate(context)) + ';';
-
-//             var Component = React.createFactory(Handler);
-//             var html = React.renderToStaticMarkup(HtmlComponent({
-//                 state: exposed,
-//                 markup: React.renderToString(
-//                     React.createElement(
-//                         FluxibleComponent,
-//                         { context: context.getComponentContext() },
-//                         Component()
-//                     )
-//                 )
-//             }));
-//             debug('Sending markup');
-//             res.send(html);
-//         });
-//     });
-// });
-
 import Location from 'react-router/lib/Location';
 
 server.use(function (req, res, next) {
@@ -69,6 +44,6 @@ server.use(function (req, res, next) {
     });
 });
 
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 3001;
 server.listen(port);
 console.log('Listening on port ' + port);

@@ -1,3 +1,3 @@
 
 require('babel/register');
-require('./bootstrap.js');
+require('./server-main.js');
