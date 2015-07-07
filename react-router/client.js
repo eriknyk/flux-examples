@@ -22,6 +22,8 @@ import routes from './components/Routes.jsx';
 window.fluxibleDebug = debug;
 window.React = React;
 
+bootstrapDebug('app.rehydrate');
+
 app.rehydrate(dehydratedState, function (err, context) {
     if (err) {
         throw err;
@@ -29,16 +31,23 @@ app.rehydrate(dehydratedState, function (err, context) {
 
     window.context = context;
     var firstRender = true;
+    const history = new BrowserHistory();
 
-    Router.run(routes, new BrowserHistory(), function (error, Handler, state) {
+    // Fix for react checksum problem
+    if (typeof history.setup === 'function') {
+        history.setup();
+    }
+
+
+    Router.run(app.getComponent(), history.location, function (error, Handler, state) {
         if (firstRender) {
+            bootstrapDebug('first firstRender');
             React.render(
                 React.createElement(
                     FluxibleComponent,
                     { context: context.getComponentContext() },
-                    <Router children={routes} history={new BrowserHistory()}/>
-                ),
-                document.getElementById('app')
+                    <Router children={ app.getComponent() } history={ history } />
+                ), document.getElementById('app')
             );
             firstRender = false;
         } else {
