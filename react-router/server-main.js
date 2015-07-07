@@ -64,19 +64,6 @@ server.use((req, res, next) => {
                 res.type('html');
                 res.write('<!DOCTYPE html>' + html);
                 res.end();
-
-                // var html = React.renderToStaticMarkup(HtmlComponent({
-                //     state: exposed,
-                //     markup: React.renderToString(
-                //         React.createElement(
-                //         FluxibleComponent,
-                //         { context: context.getComponentContext() },
-                //         <Router {...initialState}/>
-                //     )),
-                //     context: context.getComponentContext()
-                // }));
-
-                // res.send(html);
             } else {
                 let err = new Error();
                 err.status = 404;
@@ -86,6 +73,6 @@ server.use((req, res, next) => {
     });
 });
 
-var port = process.env.PORT || 3002;
+var port = process.env.PORT || 3000;
 server.listen(port);
 console.log('Listening on port ' + port);
